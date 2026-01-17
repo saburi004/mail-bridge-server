@@ -79,15 +79,19 @@ app.post("/generate-key", generateKey);
 
 // SMTP transporter (with pooling)
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  pool: true,
-  maxConnections: 5,
-  maxMessages: 100,
+  host: process.env.SMTP_HOST,           // smtp-relay.brevo.com
+  port: Number(process.env.SMTP_PORT),   // 587
+  secure: false,                         // MUST be false for 587
+  requireTLS: true,                      // IMPORTANT
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS
-  }
+    user: process.env.SMTP_USER,         // a041f4001@smtp-brevo.com
+    pass: process.env.SMTP_PASS          // SMTP key
+  },
+  connectionTimeout: 20_000,             // 👈 VERY IMPORTANT
+  greetingTimeout: 20_000,
+  socketTimeout: 20_000
 });
+
 
 transporter.verify((error) => {
   if (error) {
@@ -111,7 +115,7 @@ app.post(
 
     try {
       await transporter.sendMail({
-        from: `Mail Bridge <${process.env.SMTP_USER}>`,
+        from: "Mail Bridge <no-reply@brevo.com>",
         to,
         subject,
         text: message
