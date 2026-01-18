@@ -81,7 +81,7 @@ app.post("/generate-key", generateKey);
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,           // smtp-relay.brevo.com
   port: Number(process.env.SMTP_PORT),   // 587
-  secure: false,                         // MUST be false for 587
+  secure: Number(process.env.SMTP_PORT) === 465, // true for 465, false for other ports
   requireTLS: true,                      // IMPORTANT
   auth: {
     user: process.env.SMTP_USER,         // a041f4001@smtp-brevo.com
