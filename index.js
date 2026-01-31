@@ -77,7 +77,7 @@ app.use(cors());
 app.use(express.json());
 app.post("/generate-key", generateKey);
 
-// SMTP transporter (with pooling)
+// SMTP transporter (with pooling)made changes
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,           // smtp-relay.brevo.com
   port: Number(process.env.SMTP_PORT),   // 587
