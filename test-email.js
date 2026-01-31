@@ -28,8 +28,8 @@ async function runCallback() {
             },
             body: JSON.stringify({
                 to: "saburinikam@gmail.com",
-                subject: "Test Email from Support",
-                message: "This is a test email sent to verify the fix."
+                subject: "Test Email from Support (Resend)",
+                message: "This is a test email sent to verify the Resend fix."
             })
         });
 

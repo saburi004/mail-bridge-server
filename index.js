@@ -186,12 +186,19 @@ app.post(
     try {
       console.log(`Sending email via Resend → ${to}`);
 
-      await resend.emails.send({
-        from: "Mail Bridge <onboarding@resend.dev>",
+      const { data, error } = await resend.emails.send({
+        from: "Mail Bridge <no-reply@saburinikam.in>",
         to: to,
         subject: subject,
         text: message
       });
+
+      if (error) {
+        console.error("Resend API error:", error);
+        throw new Error(error.message);
+      }
+
+      console.log("Email sent successfully:", data);
 
       await logEvent({
         apiKey: req.apiKey,
@@ -201,7 +208,7 @@ app.post(
         responseTime: Date.now() - start
       });
 
-      res.json({ success: true });
+      res.json({ success: true, data });
 
     } catch (err) {
       console.error("Resend error:", err.message);
